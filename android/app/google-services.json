@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "830473169905",
+    "firebase_url": "https://socialnetwork-fb814.firebaseio.com",
+    "project_id": "socialnetwork-fb814",
+    "storage_bucket": "socialnetwork-fb814.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:830473169905:android:d6f823bc2f1e309cbc7250",
+        "android_client_info": {
+          "package_name": "com.amirmekk.socialmedia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "830473169905-hs6b6hm3bf5efb65v6plks497olg25tc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.amirmekk.socialmedia",
+            "certificate_hash": "2eea7ed6a2cc84d6c1755a8883e0e4ce01cee6b6"
+          }
+        },
+        {
+          "client_id": "830473169905-hupg6q1n4g9q8nljsmvaosi5lffsunm9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCUD2-M8yg2_JueBZu8q5S_8yrn4yFiTt8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "830473169905-hupg6q1n4g9q8nljsmvaosi5lffsunm9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "830473169905-tb1a3sujdiv3vfqte25nm8ufffi2393n.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.amirmekk.socialmedia"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
