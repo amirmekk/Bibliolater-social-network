@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+
+final GoogleSignIn googleSignIn = GoogleSignIn();
 
 class Home extends StatefulWidget {
   @override
@@ -7,9 +10,50 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  @override
+  void initState() {
+    super.initState();
+    //detects when user is signed in
+    googleSignIn.onCurrentUserChanged.listen(
+      (account) {
+        handleSignIn(account);
+      },
+      onError: (err) =>
+          print('an error ocured when signing using google : $err'),
+    );
+    //Re-Auth the user when app is opened
+    googleSignIn.signInSilently(suppressErrors: false).then((account) {
+      handleSignIn(account);
+    }).catchError((err) {
+      print('an error ocured when signing using google : $err');
+    });
+  }
+
+  void handleSignIn(GoogleSignInAccount account) {
+    if (account != null) {
+      print('my user account is  : $account');
+      setState(() {
+        isAuth = true;
+      });
+    } else {
+      print('no user');
+      setState(() {
+        isAuth = false;
+      });
+    }
+  }
+
   bool isAuth = false;
+  logIn() {
+    googleSignIn.signIn();
+  }
+
+  logOut() {
+    googleSignIn.signOut();
+  }
+
   Widget buildAuthScreen() {
-    return Text('user is auth');
+    return RaisedButton(onPressed: logOut , child: Text('log out '),);
   }
 
   Widget buildUnAuthScreen() {
@@ -19,7 +63,10 @@ class _HomeState extends State<Home> {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [Colors.teal, Colors.purple],
+            colors: [
+              Theme.of(context).accentColor,
+              Theme.of(context).primaryColor,
+            ],
           ),
         ),
         alignment: Alignment.center,
@@ -36,9 +83,7 @@ class _HomeState extends State<Home> {
                 ),
               ),
               GestureDetector(
-                onTap: () {
-                  print('tapped');
-                },
+                onTap: logIn,
                 child: Container(
                   width: 260.0,
                   height: 60.0,
