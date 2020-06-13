@@ -1,6 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:social_network/pages/activity_feed.dart';
+import 'package:social_network/pages/profile.dart';
+import 'package:social_network/pages/search.dart';
+import 'package:social_network/pages/timeline.dart';
+import 'package:social_network/pages/upload.dart';
 
 final GoogleSignIn googleSignIn = GoogleSignIn();
 
@@ -10,9 +15,13 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  PageController pageController;
+  bool isAuth = false;
+  int pageIndex = 0;
   @override
   void initState() {
     super.initState();
+    pageController = PageController();
     //detects when user is signed in
     googleSignIn.onCurrentUserChanged.listen(
       (account) {
@@ -43,7 +52,6 @@ class _HomeState extends State<Home> {
     }
   }
 
-  bool isAuth = false;
   logIn() {
     googleSignIn.signIn();
   }
@@ -52,8 +60,61 @@ class _HomeState extends State<Home> {
     googleSignIn.signOut();
   }
 
-  Widget buildAuthScreen() {
-    return RaisedButton(onPressed: logOut , child: Text('log out '),);
+  onPageChanged(int pageIndex) {
+    setState(() {
+      this.pageIndex = pageIndex;
+    });
+  }
+
+  onTap(int pageIndex) {
+    pageController.jumpToPage(pageIndex);
+  }
+
+  Scaffold buildAuthScreen() {
+    return Scaffold(
+      body: PageView(
+        children: <Widget>[
+          Timeline(),
+          ActivityFeed(),
+          Upload(),
+          Search(),
+          Profile(),
+        ],
+        controller: pageController,
+        onPageChanged: onPageChanged,
+        physics: NeverScrollableScrollPhysics(),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.whatshot),
+            title: Text(''),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.notifications),
+            title: Text(''),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.photo_camera, size: 35.0),
+            title: Text(''),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            title: Text(''),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_circle),
+            title: Text(''),
+          ),
+        ],
+        selectedItemColor: Theme.of(context).primaryColor,
+        unselectedItemColor: Colors.grey,
+        currentIndex: pageIndex,
+        onTap: (index) {
+          onTap(index);
+        },
+      ),
+    );
   }
 
   Widget buildUnAuthScreen() {
@@ -104,5 +165,11 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return isAuth ? buildAuthScreen() : buildUnAuthScreen();
+  }
+
+  @override
+  void dispose() {
+    pageController.dispose();
+    super.dispose();
   }
 }
