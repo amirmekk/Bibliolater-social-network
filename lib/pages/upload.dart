@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:social_network/widgets/progress.dart';
@@ -183,9 +184,7 @@ class _UploadState extends State<Upload> {
             color: Colors.blue,
             shape:
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-            onPressed: () {
-              print('to do : get user location');
-            },
+            onPressed: getUserLocation,
             label: Text(
               'Use current location',
               style: TextStyle(
@@ -200,6 +199,19 @@ class _UploadState extends State<Upload> {
         ),
       ],
     );
+  }
+
+  getUserLocation() async {
+    //get current user location
+    Position position = await Geolocator()
+        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    //get information about location taking latitude and longtitude and returning it to country and city
+    List<Placemark> placemarks = await Geolocator()
+        .placemarkFromCoordinates(position.latitude, position.longitude);
+    Placemark placemark = placemarks[0];
+    //set the location text field to city + country
+    String formatedAdress = '${placemark.locality}, ${placemark.country} ';
+    locationController.text = formatedAdress;
   }
 
   clearImage() {
