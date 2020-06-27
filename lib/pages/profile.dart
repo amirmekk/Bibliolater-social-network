@@ -7,6 +7,7 @@ import 'package:social_network/pages/edit_profile.dart';
 import 'package:social_network/pages/home.dart';
 import 'package:social_network/widgets/header.dart';
 import 'package:social_network/widgets/post.dart';
+import 'package:social_network/widgets/post_tile.dart';
 import 'package:social_network/widgets/progress.dart';
 
 class Profile extends StatefulWidget {
@@ -200,9 +201,22 @@ class _ProfileState extends State<Profile> {
     if (_isLoading) {
       return circularProgress(context);
     }
-    return Column(
-      children: posts,
+    List<GridTile> gridTiles = [];
+    posts.forEach((post) {
+      gridTiles.add(GridTile(child: PostTile(post)));
+    });
+    return GridView.count(
+      crossAxisCount: 3,
+      childAspectRatio: 1.0,
+      mainAxisSpacing: 1.5,
+      crossAxisSpacing: 1.5,
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      children: gridTiles,
     );
+    // return Column(
+    //   children: posts,
+    // );
   }
 
   @override
