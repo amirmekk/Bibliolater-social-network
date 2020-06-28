@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:social_network/models/user.dart';
 import 'package:social_network/pages/edit_profile.dart';
 //import 'package:social_network/pages/timeline.dart';
@@ -26,7 +27,7 @@ class _ProfileState extends State<Profile> {
   @override
   void initState() {
     super.initState();
-    getProfilePosts();
+    //getProfilePosts();
   }
 
   getProfilePosts() async {
@@ -199,8 +200,36 @@ class _ProfileState extends State<Profile> {
   }
 
   buildProfilePosts() {
+    final Orientation orientation = MediaQuery.of(context).orientation;
     if (_isLoading) {
       return circularProgress(context);
+    } else if (posts.isEmpty) {
+      return Container(
+        child: Center(
+          child: ListView(
+            shrinkWrap: true,
+            children: <Widget>[
+              SvgPicture.asset(
+                'assets/images/no_content.svg',
+                height: orientation == Orientation.portrait ? 300 : 150,
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(50, 20, 50, 0),
+                child: Center(
+                  child: Text(
+                    'No Posts',
+                    style: TextStyle(
+                      color: Colors.pink[300],
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
+                     ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
     } else if (postOrientation == 'grid') {
       List<GridTile> gridTiles = [];
       posts.forEach((post) {
