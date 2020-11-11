@@ -56,7 +56,7 @@ class _CreateAccountState extends State<CreateAccount> {
                 onSaved: (value) {
                   setState(() => username = value);
                 },
-                autovalidate: true,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
                 validator: (val) {
                   if (val.trim().length < 3 || val.isEmpty) {
                     return 'username too short';
