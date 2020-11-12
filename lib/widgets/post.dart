@@ -5,6 +5,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:social_network/models/user.dart';
+import 'package:social_network/pages/comments.dart';
 import 'package:social_network/widgets/custom_image.dart';
 import 'package:social_network/pages/home.dart';
 import 'package:social_network/widgets/progress.dart';
@@ -62,9 +63,8 @@ class Post extends StatefulWidget {
 class _PostState extends State<Post> {
   final String currentUserId = currentUser?.id;
   final String postId, ownerId, username, location, description, mediaUrl;
-  bool isLiked;
+  bool isLiked, showHeart = false;
   int likeCount;
-  bool showHeart = false;
   Map likes;
   _PostState(
       {this.postId,
@@ -188,7 +188,8 @@ class _PostState extends State<Post> {
             ),
             Padding(padding: EdgeInsets.only(right: 20)),
             GestureDetector(
-              onTap: () => print('commenting '),
+              onTap: () => showComments(context,
+                  postId: postId, ownerId: ownerId, mediaUrl: mediaUrl),
               child: Icon(
                 Icons.chat,
                 size: 28,
@@ -245,4 +246,11 @@ class _PostState extends State<Post> {
       ],
     );
   }
+}
+
+showComments(BuildContext context,
+    {String postId, String ownerId, String mediaUrl}) {
+  Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => Comments(
+          postId: postId, postOwnerId: ownerId, postMediaUrl: mediaUrl)));
 }

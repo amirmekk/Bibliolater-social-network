@@ -14,6 +14,8 @@ import 'package:social_network/pages/upload.dart';
 final GoogleSignIn googleSignIn = GoogleSignIn();
 final CollectionReference usersRef = Firestore.instance.collection('users');
 final CollectionReference postsRef = Firestore.instance.collection('posts');
+final CollectionReference commentsRef =
+    Firestore.instance.collection('comments');
 
 final StorageReference storageRef = FirebaseStorage.instance.ref();
 final DateTime timestamp = DateTime.now();
@@ -137,23 +139,23 @@ class _HomeState extends State<Home> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.whatshot),
-            title: Text(''),
+            label: '',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.notifications),
-            title: Text(''),
+            label: '',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.photo_camera, size: 35.0),
-            title: Text(''),
+            label: '',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
-            title: Text(''),
+            label: '',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.account_circle),
-            title: Text(''),
+            label: '',
           ),
         ],
         selectedItemColor: Theme.of(context).primaryColor,
