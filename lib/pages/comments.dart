@@ -120,7 +120,7 @@ class Comment extends StatelessWidget {
       children: [
         ListTile(
           title: Text(comment),
-          //subtitle: Text(timeago.format(timestamp.toDate())),
+          subtitle: Text(timeago.format(timestamp.toDate())),
           leading: CircleAvatar(
             backgroundImage: CachedNetworkImageProvider(avatarUrl),
             backgroundColor: Theme.of(context).primaryColor,
