@@ -5,7 +5,7 @@ AppBar header(context,
     String titleText,
     bool removeBackButton = false}) {
   return AppBar(
-    automaticallyImplyLeading: !removeBackButton ,
+    automaticallyImplyLeading: !removeBackButton,
     centerTitle: true,
     backgroundColor: Theme.of(context).accentColor,
     title: Text(
@@ -15,6 +15,7 @@ AppBar header(context,
         fontFamily: isAppTitle ? 'Signatra' : '',
         fontSize: isAppTitle ? 50.0 : 22.0,
       ),
+      overflow: TextOverflow.ellipsis,
     ),
   );
 }
