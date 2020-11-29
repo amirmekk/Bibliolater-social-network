@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:social_network/models/user.dart';
+import 'package:social_network/pages/activity_feed.dart';
 import 'package:social_network/pages/home.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:social_network/widgets/progress.dart';
@@ -122,7 +123,7 @@ class UserResult extends StatelessWidget {
         children: <Widget>[
           GestureDetector(
             onTap: () {
-              print('user selected please take me to the profile page ');
+              showProfile(context, profileId: user.id);
             },
             child: ListTile(
               title: Text(
