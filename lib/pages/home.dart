@@ -14,6 +14,10 @@ import 'package:social_network/pages/upload.dart';
 final GoogleSignIn googleSignIn = GoogleSignIn();
 final CollectionReference usersRef = Firestore.instance.collection('users');
 final CollectionReference postsRef = Firestore.instance.collection('posts');
+final CollectionReference followersRef =
+    Firestore.instance.collection('followers');
+final CollectionReference followingRef =
+    Firestore.instance.collection('following');
 final CollectionReference activityFeedRef =
     Firestore.instance.collection('feed');
 final CollectionReference commentsRef =
