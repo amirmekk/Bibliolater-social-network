@@ -84,6 +84,7 @@ class _PostState extends State<Post> {
           return circularProgress(context);
         }
         User user = User.fromDocument(snapshot.data);
+        final bool isPostOwner = currentUserId == ownerId;
         return ListTile(
           leading: CircleAvatar(
             backgroundImage: CachedNetworkImageProvider(user.photoUrl),
@@ -102,13 +103,83 @@ class _PostState extends State<Post> {
             ),
           ),
           subtitle: Text(location),
-          trailing: IconButton(
-            icon: Icon(Icons.more_vert),
-            onPressed: () => print('delete post '),
-          ),
+          trailing: isPostOwner
+              ? IconButton(
+                  icon: Icon(Icons.more_vert),
+                  onPressed: () => handleDeletePost(context),
+                )
+              : Text(''),
         );
       },
     );
+  }
+
+  handleDeletePost(BuildContext parentcontext) {
+    return showDialog(
+      context: parentcontext,
+      builder: (context) {
+        return SimpleDialog(
+          title: Text('Remove this post?'),
+          children: [
+            SimpleDialogOption(
+              onPressed: () {
+                Navigator.of(context).pop();
+                deletePost();
+              },
+              child: Text(
+                'Delete',
+                style: TextStyle(
+                  color: Colors.red,
+                ),
+              ),
+            ),
+            SimpleDialogOption(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+//  note : to be able to delete a post, ownerId and  currentUserId must be equal, so they can be used interchangeably
+  deletePost() async {
+    postsRef
+        .document(ownerId)
+        .collection('userPosts')
+        .document(postId)
+        .get()
+        .then((post) {
+      if (post.exists) {
+        post.reference.delete();
+      }
+    });
+    // delete uploaded image for the post
+    storageRef.child('post_$postId.jpg').delete();
+    // delete activity feed notifictions
+    QuerySnapshot activityFeedSnapshot = await activityFeedRef
+        .document(ownerId)
+        .collection('feedItems')
+        .where('postId', isEqualTo: postId)
+        .getDocuments();
+    activityFeedSnapshot.documents.forEach((doc) {
+      if (doc.exists) {
+        doc.reference.delete();
+      }
+    });
+    // delete all comments related to post
+    QuerySnapshot commentSnapshot = await commentsRef
+        .document(postId)
+        .collection('comments')
+        .getDocuments();
+    commentSnapshot.documents.forEach((doc) {
+      if (doc.exists) {
+        doc.reference.delete();
+      }
+    });
   }
 
   handleLikePost() {
