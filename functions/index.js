@@ -11,7 +11,7 @@ admin.initializeApp();
 exports.onCreateFollower = functions.firestore
     .document('/followers/{userId}/userFollowers/{followerId}')
     .onCreate(async (snapshot, context) => {
-        console.log('follower created', snapshot.data);
+        console.log('Follower Created', snapshot.id);
         const userId = context.params.userId;
         const followerId = context.params.followerId;
 
@@ -33,6 +33,27 @@ exports.onCreateFollower = functions.firestore
                 const postId = doc.id;
                 const postData = doc.data();
                 timelinePostRef.doc(postId).set(postData);
+            }
+        });
+    })
+
+exports.onDeleteFollower = functions.firestore
+    .document('/followers/{userId}/userFollowers/{followerId}')
+    .onDelete(async (snapshot, context) => {
+        console.log('Follower Deleted', snapshot.id);
+        const userId = context.params.userId;
+        const followerId = context.params.followerId;
+        // 1 - get all of the posts of the unfollowed user that exist in the timeline collection by owner id
+        const timelinePostRef = admin.firestore()
+            .collection('timeline')
+            .doc(followerId)
+            .collection('timelinePosts')
+            .where('ownerId', '==', userId);
+        const querySnapshot = await timelinePostRef.get();
+        // 2 - delete those posts
+        querySnapshot.forEach(doc => {
+            if (doc.exists) {
+                doc.ref.delete();
             }
         });
     })
