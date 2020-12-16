@@ -22,8 +22,8 @@ class _ActivityFeedState extends State<ActivityFeed> {
         .limit(50)
         .getDocuments();
     List<ActivityFeedItem> feedItems = [];
-    snapshot.documents.forEach((element) {
-      feedItems.add(ActivityFeedItem.fromDocument(element));
+    snapshot.documents.forEach((doc) {
+      feedItems.add(ActivityFeedItem.fromDocument(doc));
       //print('activity feed item:' + '${element.data}');
     });
     return feedItems;

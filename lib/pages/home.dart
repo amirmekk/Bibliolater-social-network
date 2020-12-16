@@ -8,12 +8,15 @@ import 'package:social_network/pages/activity_feed.dart';
 import 'package:social_network/pages/create_account.dart';
 import 'package:social_network/pages/profile.dart';
 import 'package:social_network/pages/search.dart';
+import 'package:social_network/pages/timeline.dart';
 //import 'package:social_network/pages/timeline.dart';
 import 'package:social_network/pages/upload.dart';
 
 final GoogleSignIn googleSignIn = GoogleSignIn();
 final CollectionReference usersRef = Firestore.instance.collection('users');
 final CollectionReference postsRef = Firestore.instance.collection('posts');
+final CollectionReference timelineRef =
+    Firestore.instance.collection('timeline');
 final CollectionReference followersRef =
     Firestore.instance.collection('followers');
 final CollectionReference followingRef =
@@ -130,8 +133,8 @@ class _HomeState extends State<Home> {
     return Scaffold(
       body: PageView(
         children: <Widget>[
-          //Timeline(),
-          RaisedButton(onPressed: logOut, child: Text('log out ')),
+          Timeline(currentUser: currentUser),
+          //RaisedButton(onPressed: logOut, child: Text('log out ')),
           ActivityFeed(),
           Upload(currentUser: currentUser),
           Search(),
