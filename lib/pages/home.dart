@@ -59,9 +59,9 @@ class _HomeState extends State<Home> {
     });
   }
 
-  void handleSignIn(GoogleSignInAccount account) {
+  handleSignIn(GoogleSignInAccount account) async {
     if (account != null) {
-      createUserInFirestore();
+      await createUserInFirestore();
       print('my user account is  : $account');
       setState(() {
         isAuth = true;
