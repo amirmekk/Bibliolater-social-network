@@ -1,5 +1,5 @@
 # Bibliolater
 
-An instagram like social network destined for books enthusiasts and sharing quotes.
+An Instagram like a social network for book enthusiasts to share their favorite quotes.
 
 built using flutter and firebase, signin and login using google auth only.
